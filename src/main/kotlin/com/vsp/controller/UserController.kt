@@ -9,6 +9,11 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/users")
 class UserController(private val userService: UserService) {
 
+    @GetMapping("/health")
+    fun handleGetRequest(): String {
+        return "Response for GET request"
+    }
+
     @PostMapping("/register")
     fun registerUser(@RequestBody user: User): ResponseEntity<User> {
         val registeredUser = userService.registerUser(user)
