@@ -1,5 +1,6 @@
 package com.vsp.controller
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.vsp.model.User
 import com.vsp.service.UserService
 import org.springframework.http.ResponseEntity
@@ -9,9 +10,12 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/users")
 class UserController(private val userService: UserService) {
 
+
+    private val objectMapper = ObjectMapper()
     @GetMapping("/health")
     fun handleGetRequest(): String {
-        return "Response for GET request"
+        data class HealthStatus(val application: String, val status: String)
+        return   objectMapper.writeValueAsString(HealthStatus(application = "vsp-userservices", status = "OK"));
     }
 
     @PostMapping("/register")
