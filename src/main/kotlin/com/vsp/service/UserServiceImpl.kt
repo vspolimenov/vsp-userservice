@@ -5,15 +5,18 @@ import com.vsp.repository.UserRepository
 import com.vsp.service.UserService
 import org.springframework.stereotype.Service
 import com.google.firebase.auth.FirebaseAuth
+import com.vsp.com.vsp.model.UserLoginDto
+import org.springframework.beans.factory.annotation.Qualifier
+
 @Service
-class UserServiceImpl(private val userRepository: UserRepository) : UserService {
+class UserServiceImpl(@Qualifier("oracleUserRepository") private val userRepository: UserRepository) : UserService {
 
     override fun registerUser(user: User): User {
         // Implement registration logic
         return userRepository.saveUser(user)
     }
 
-    override fun loginUser(token: String): User? {
+    override fun loginUser(userDetails: UserLoginDto, token: String): User? {
         return try {
             val decodedToken = FirebaseAuth.getInstance().verifyIdToken(token)
             val uid = decodedToken.uid
@@ -25,6 +28,8 @@ class UserServiceImpl(private val userRepository: UserRepository) : UserService 
             null
         }
     }
+
+
 
     override fun deleteUser(id: String): Boolean {
         // Implement delete logic

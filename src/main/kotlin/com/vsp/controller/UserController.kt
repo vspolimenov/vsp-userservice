@@ -1,8 +1,10 @@
 package com.vsp.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.vsp.com.vsp.model.UserLoginDto
 import com.vsp.model.User
 import com.vsp.service.UserService
+import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -25,9 +27,13 @@ class UserController(private val userService: UserService) {
     }
 
     @PostMapping("/login")
-    fun loginUser(@RequestBody token: String): ResponseEntity<User?> {
-        val user = userService.loginUser(token)
-        return ResponseEntity.ok(user)
+    fun loginUser(@RequestBody userDetails: UserLoginDto, request: HttpServletRequest): ResponseEntity<User?> {
+        val token = request.getHeader("Authorization")?.substring("Bearer ".length)
+        token?.let {
+            val user = userService.loginUser(userDetails, it)
+            return ResponseEntity.ok(user)
+        }
+        return ResponseEntity.badRequest().build() // Or handle as needed
     }
     @DeleteMapping("/{id}")
     fun deleteUser(@PathVariable id: String): ResponseEntity<Boolean> {
