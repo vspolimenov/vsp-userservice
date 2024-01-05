@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.JdbcTemplate
 
 @Repository
-class OracleUserRepository(@Autowired private val jdbcTemplate: JdbcTemplate) : UserRepository {
+open class OracleUserRepository(@Autowired private val jdbcTemplate: JdbcTemplate) : UserRepository {
 
     override fun saveUser(user: User): User {
         val sql = "INSERT INTO users (id, email, nickname, age, gender, role) VALUES (?, ?, ?, ?, ?, ?)"

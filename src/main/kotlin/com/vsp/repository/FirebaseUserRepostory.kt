@@ -6,7 +6,7 @@ import com.google.firebase.cloud.FirestoreClient
 import org.springframework.stereotype.Repository
 
 @Repository
-class FirebaseUserRepository : UserRepository {
+open class FirebaseUserRepository : UserRepository {
 
     private val firestore = FirestoreClient.getFirestore()
 
